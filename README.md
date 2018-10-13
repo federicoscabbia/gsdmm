@@ -23,7 +23,7 @@ the student must select a new table satisfying one or both of the following cond
 By following these steps consistently, we might expect that the students eventually arrive at an "optimal" table configuration.
 
 ## Installation
-Enter the directory `where` setup.py stands, and in the command line, use:
+Enter the directory where `setup.py` stands, and in the command line, use:
 ```
 python setup.py install
 ```
