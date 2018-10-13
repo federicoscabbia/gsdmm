@@ -50,7 +50,7 @@ Note that: Each doc in `docs` must be a unique list of tokens found in your shor
 To classify a new sample:
 ```python
 doc = ['new','short','text']
-print(mgp.choose_best_label(doc))
+label, probability = mgp.choose_best_label(doc)
 ```
 
 To get the word importance for each topic: _(not in the original version, but my own implemented according to the paper.)_
