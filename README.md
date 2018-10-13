@@ -22,18 +22,47 @@ the student must select a new table satisfying one or both of the following cond
 
 By following these steps consistently, we might expect that the students eventually arrive at an "optimal" table configuration.
 
+## Installation
+Enter the directory `where` setup.py stands, and in the command line, use:
+```
+python setup.py install
+```
+
 ## Usage
 To use a Movie Group Process to cluster short texts, first initialize a [MovieGroupProcess](gsdmm/mgp.py):
 ```python
 from gsdmm import MovieGroupProcess
 mgp = MovieGroupProcess(K=8, alpha=0.1, beta=0.1, n_iters=30)
 ```
-It's important to always choose `K` to be larger than the number of clusters you expect exist in your data, as the algorithm
-can never return more than `K` clusters.
+`K` is the largest expected number of clusters in your data, as the algorithm will assign one of the `K` clusters to each doc, and some clusters may not be used.
 
 To fit the model:
 ```python
-y = mgp.fit(docs)
+docs = [['short','text','A'],
+        ['another','short','text'],
+        ['others']]
+vocab = set(x for doc in docs for x in doc)
+y = mgp.fit(docs,len(vocab))
 ```
-Each doc in `docs` must be a unique list of tokens found in your short text document. This implementation does not support
-counting tokens with multiplicity (which generally has little value in short text documents).
+`y` is the clustering result. 
+Note that: Each doc in `docs` must be a unique list of tokens found in your short text document. And this implementation does not support counting tokens with multiplicity (which generally has little value in short text documents).
+
+To classify a new sample:
+```python
+doc = ['new','short','text']
+print(mgp.choose_best_label(doc))
+```
+
+To get the word importance for each topic: _(not in the original version, but my own implemented according to the paper.)_
+```python
+def cluster_importance(mgp):
+    n_z_w = mgp.cluster_word_distribution
+    beta, V, K = mgp.beta, mgp.vocab_size, mgp.K
+    phi = [{} for i in range(K)]        
+    for z in range(K):
+        for w in n_z_w[z]:
+            phi[z][w] = (n_z_w[z][w]+beta)/(sum(n_z_w[z].values())+V*beta)
+    return phi
+phi = cluster_importance(mgp)
+```
+`phi[i][w]` would be the importance of word `w` in topic `i`.
