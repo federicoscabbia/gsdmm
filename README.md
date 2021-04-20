@@ -27,6 +27,11 @@ Enter the directory where `setup.py` stands, and in the command line, use:
 ```
 python setup.py install
 ```
+if you are in conda environment use this command in the command prompt:
+```
+pip install git + https://github.com/rwalk/gsdmm.git
+
+```
 
 ## Usage
 To use a Movie Group Process to cluster short texts, first initialize a [MovieGroupProcess](gsdmm/mgp.py):
